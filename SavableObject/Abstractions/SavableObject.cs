@@ -1,14 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using Xamarin.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Plugin.SavableObject.Abstractions
 {
-    public class SavableObject : ISavable
+    [Obsolete("This class is moved to Plugin.SavableObject.Shared.SavableObject, use this instead. This class will be removed soon")]
+    public class SavableObject
     {
         public SavableObject()
         {
@@ -101,11 +98,12 @@ namespace Plugin.SavableObject.Abstractions
             Application.Current.SavePropertiesAsync();
         }
 
-
-        public class IgnoreSave : Attribute
-        {
-
+        [System.AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+        sealed class IgnoreSaveAttribute : Attribute
+        {            
+            public IgnoreSaveAttribute()
+            {
+            }
         }
-
     }
 }
