@@ -29,9 +29,8 @@
     <releaseNotes>Same property name in different classes can save not as different data</releaseNotes>
 
     <summary>
-      Read contacts from iOS and Android Devices
+      Allows save data without any SQL. Just Inherit your Viewmodel from SavableObject and use Save(), Load() methods in your ViewModel
     </summary>
-    Allows save data without any SQL. Just Inherit your ViewModel from SavableObject and use Save(), Load() methods in you ViewModel.
     
     <description>
       NOTE: It's enough to add this package to only Portable Layer.
