@@ -5,10 +5,11 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F539498-A06C-41F0-B576-17FF408F0E03}"
 	ProjectSection(SolutionItems) = preProject
+		SavableObject.nuspec = SavableObject.nuspec
 		SavableObject.Plugin.nuspec = SavableObject.Plugin.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SavableObject", "SavableObject\SavableObject.csproj", "{70DDC91C-A0D8-431E-8C90-5FC70E795F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavableObject", "SavableObject\SavableObject.csproj", "{70DDC91C-A0D8-431E-8C90-5FC70E795F59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

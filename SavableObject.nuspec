@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <!-- The identifier that must be unique within the hosting gallery -->
+    <id>Xamarin.Forms.SavableObject</id>
+
+    <!-- The package version number that is used when resolving dependencies -->
+    <version>1.2.1</version>
+
+    <!-- Authors contain text that appears directly on the gallery -->
+    <authors>Enis Necipoğlu</authors>
+
+    <!-- Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  -->
+    <owners>Enis Necipoğlu</owners>
+
+    <!-- License and project URLs provide links for the gallery -->
+    <licenseUrl>https://github.com/enisn/Xamarin.Forms.SavableObject</licenseUrl>
+    <projectUrl>https://github.com/enisn/TestAppSavableObject</projectUrl>
+
+    <!-- The icon is used in Visual Studio's package manager UI -->
+    <iconUrl>http://enisnecipoglu.com/Plugins/savableobject.png</iconUrl>
+
+    <!-- If true, this value prompts the user to accept the license when
+            installing the package. -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <!-- Any details about this particular release -->
+    <releaseNotes>Same property name in different classes can save not as different data</releaseNotes>
+
+    <summary>
+      Read contacts from iOS and Android Devices
+    </summary>
+    Allows save data without any SQL. Just Inherit your ViewModel from SavableObject and use Save(), Load() methods in you ViewModel.
+    
+    <description>
+      NOTE: It's enough to add this package to only Portable Layer.
+
+
+      v.1.2.1 UPDATE !!
+      Same properties from different classes, overries each other. This problem fixed and all properties are saved for its own class
+
+      v.1.2.0 UPDATE!!!
+      Plugin converted to .Net Standard template, you may change your references
+
+      BUGS
+      - ObservableCollection is not supported for now, Please use IList on your property and set it in constructor as ObservableCollection. You can find that in sample project.
+
+
+
+
+      Just Inherit from SavableObject and use Save() Load() Methods to save and load your data. You can keep your SavableObject as a Static variable or Property to reach from anywhere of your application.
+
+      You can review the sample project from this link:
+      https://github.com/enisn/TestAppSavableObject
+      NEED MORE HELP?
+      you can visit http://enisnecipoglu.com/xamarin-forms-saving-data-without-sql/
+
+      class UserInfo : SavableObject
+      {
+      public string Name { get; set;}
+      [IgnoreSave]
+      public byte Age{ get; set;}
+
+      ~UserInfo()
+      {
+      Save();
+      }
+      }
+
+    </description>
+
+    <!-- Copyright information -->
+    <copyright>Copyright ©2018 Enis Necipoglu</copyright>
+
+    <!-- Tags appear in the gallery and can be used for tag searches -->
+    <tags>sql,SQL, xamarin, pcl, Save, sabable, ios, android, data, savableobject, local, xamarin.forms, without, local data, preferences, application preferences</tags>
+
+    <!-- Dependencies are automatically installed when the package is installed -->
+    <dependencies>
+      <dependency id="Newtonsoft.JSON" version="9.0.1" />
+    </dependencies>
+  </metadata>
+
+  <!-- A readme.txt to display when the package is installed -->
+  <files>
+
+    <!-- Cross-platform reference assemblies -->
+    <file src="SavableObject\bin\Release\netstandard2.0\Plugin.SavableObject.dll" target="lib\netstandard2.0\Plugin.SavableObject.dll" />
+    <file src="SavableObject\bin\Release\netstandard2.0\Plugin.SavableObject.xml" target="lib\netstandard2.0\Plugin.SavableObject.xml" />
+    <file src="SavableObject\bin\Release\netstandard1.0\Plugin.SavableObject.dll" target="lib\netstandard1.0\Plugin.SavableObject.dll" />
+    <file src="SavableObject\bin\Release\netstandard1.0\Plugin.SavableObject.xml" target="lib\netstandard1.0\Plugin.SavableObject.xml" />
+
+  </files>
+</package>
