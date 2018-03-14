@@ -5,7 +5,7 @@
     <id>Xamarin.Forms.SavableObject</id>
 
     <!-- The package version number that is used when resolving dependencies -->
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <!-- Authors contain text that appears directly on the gallery -->
     <authors>Enis Necipoğlu</authors>
@@ -28,13 +28,20 @@
     <!-- Any details about this particular release -->
     <releaseNotes>Same property name in different classes can save not as different data</releaseNotes>
 
+    <title>SavableObject</title>
     <summary>
       Allows save data without any SQL. Just Inherit your Viewmodel from SavableObject and use Save(), Load() methods in your ViewModel
     </summary>
-    
+
     <description>
       NOTE: It's enough to add this package to only Portable Layer.
 
+      v.1.2.2 UPDATE !!
+      IgnoreSave attribute fixed!
+      You can save, load, clear any object with static methods,
+      SavableObject.Save();
+      SavableObject.Load();
+      SavableObject.Clear();
 
       v.1.2.1 UPDATE !!
       Same properties from different classes, overries each other. This problem fixed and all properties are saved for its own class
