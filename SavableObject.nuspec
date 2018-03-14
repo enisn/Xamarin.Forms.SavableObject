@@ -5,7 +5,7 @@
     <id>Xamarin.Forms.SavableObject</id>
 
     <!-- The package version number that is used when resolving dependencies -->
-    <version>1.2.2</version>
+    <version>1.2.3</version>
 
     <!-- Authors contain text that appears directly on the gallery -->
     <authors>Enis Necipoğlu</authors>
@@ -36,7 +36,11 @@
     <description>
       NOTE: It's enough to add this package to only Portable Layer.
 
-      v.1.2.2 UPDATE !!
+      v.1.2.3 UPDATED!!
+      Stabled all features from v.1.2.2
+      Some collections saving problem fixed!
+      
+      v.1.2.2
       IgnoreSave attribute fixed!
       You can save, load, clear any object with static methods,
       SavableObject.Save();
