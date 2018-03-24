@@ -119,8 +119,6 @@ namespace Plugin.SavableObject.Shared
             Application.Current.SavePropertiesAsync();
         }
         #endregion
-
-
         /// <summary>
         /// To save all properties in this class.
         /// </summary>
@@ -133,20 +131,21 @@ namespace Plugin.SavableObject.Shared
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                         continue;
 
+                    string savedName = this.GetType().Name + property.Name;
 
                     if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType))
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                            Application.Current.Properties[property.Name] = JsonConvert.SerializeObject(property.GetValue(this));
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                            Application.Current.Properties[savedName] = JsonConvert.SerializeObject(property.GetValue(this));
                         else
-                            Application.Current.Properties.Add(property.Name, JsonConvert.SerializeObject(property.GetValue(this)));
+                            Application.Current.Properties.Add(savedName, JsonConvert.SerializeObject(property.GetValue(this)));
                     }
                     else
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                            Application.Current.Properties[property.Name] = property.GetValue(this);
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                            Application.Current.Properties[savedName] = property.GetValue(this);
                         else
-                            Application.Current.Properties.Add(property.Name, property.GetValue(this));
+                            Application.Current.Properties.Add(savedName, property.GetValue(this));
                     }
 
                 }
@@ -169,19 +168,19 @@ namespace Plugin.SavableObject.Shared
                     continue;
                 try
                 {
-
+                    string savedName = this.GetType().Name + property.Name;
                     //if (property.GetValue(this) is ICollection)
                     if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType))
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanWrite)
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanWrite)
                             property.SetValue(this,
                                        //Convert.ChangeType(
-                                       JsonConvert.DeserializeObject(Application.Current.Properties[property.Name].ToString(), property.PropertyType));
+                                       JsonConvert.DeserializeObject(Application.Current.Properties[savedName].ToString(), property.PropertyType));
                     }
                     else
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanWrite)
-                            property.SetValue(this, Application.Current.Properties[property.Name]);
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanWrite)
+                            property.SetValue(this, Application.Current.Properties[savedName]);
                     }
                 }
                 catch (Exception ex)
@@ -203,14 +202,15 @@ namespace Plugin.SavableObject.Shared
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                         continue;
 
-                    if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                        Application.Current.Properties.Remove(property.Name);
+                    string savedName = this.GetType().Name + property.Name;
+
+                    if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                        Application.Current.Properties.Remove(savedName);
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
                 }
-
             }
             Application.Current.SavePropertiesAsync();
         }
