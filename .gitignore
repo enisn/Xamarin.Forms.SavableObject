@@ -6,3 +6,8 @@
 /SavableObject/obj
 /.vs
 /nuget.exe
+/Sample.SavableObject/Sample.SavableObject/obj
+/Sample.SavableObject/Sample.SavableObject/bin/Debug/netstandard2.0
+/Sample.SavableObject/Sample.SavableObject.Android/obj
+/Sample.SavableObject/Sample.SavableObject.Android/bin/Debug
+/Sample.SavableObject/Sample.SavableObject.iOS/obj

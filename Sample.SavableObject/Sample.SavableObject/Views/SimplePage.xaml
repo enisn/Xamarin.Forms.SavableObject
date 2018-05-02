@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sample.SavableObject.ViewModels"
+             x:Class="Sample.SavableObject.Views.SimplePage">
+    <ContentPage.BindingContext>
+        <vm:SimpleViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="{Binding Value}" HorizontalOptions="FillAndExpand"/>
+                <Stepper Maximum="30" Minimum="5" Increment="1" Value="{Binding Value}"/>
+            </StackLayout>
+
+            <Entry Text="{Binding NameSurname}" Placeholder="Type your Name Surname" />
+
+            <Switch IsToggled="{Binding IsAllowed}"/>
+
+            <Button Text="SAVE" Command="{Binding SaveCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
