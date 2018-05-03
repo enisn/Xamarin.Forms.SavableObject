@@ -12,7 +12,6 @@ namespace Sample.SavableObject
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new Sample.SavableObject.MainPage());
         }
 
