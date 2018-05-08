@@ -62,7 +62,7 @@ namespace Plugin.SavableObject.Shared
         /// Loads an object and returns it
         /// </summary>
         /// <typeparam name="T">Object type to load</typeparam>
-        public static T Load<T>() where T:new()
+        public static T Load<T>() where T : new()
         {
             T result = new T();
             foreach (var property in result.GetType().GetRuntimeProperties())
@@ -94,9 +94,19 @@ namespace Plugin.SavableObject.Shared
             return result;
         }
         /// <summary>
+        /// Loads directly to object properties. WARNING: All properties will be affected but IgnoreSave
+        /// </summary>
+        /// <typeparam name="T">Not Necessary, just send value</typeparam>
+        /// <param name="valueToLoad">Valu to be loaded. </param>
+        public static void Load<T>(T valueToLoad) where T : new()
+        {
+            valueToLoad = Load<T>();
+        }
+
+        /// <summary>
         /// Clears all properties of an object from local storage
         /// </summary>
-        public static void Clear<T>(T value) where T:new()
+        public static void Clear<T>(T value) where T : new()
         {
             if (value == null)
                 value = new T();
@@ -119,6 +129,7 @@ namespace Plugin.SavableObject.Shared
             Application.Current.SavePropertiesAsync();
         }
         #endregion
+
         /// <summary>
         /// To save all properties in this class.
         /// </summary>
