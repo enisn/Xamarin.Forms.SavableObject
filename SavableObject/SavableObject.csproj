@@ -45,6 +45,10 @@
     <Compile Include="Shared\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Shared\GlobalSetting.cs" />
+  </ItemGroup>
+
 
   <!--
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">

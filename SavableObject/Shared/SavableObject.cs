@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Xamarin.Forms;
+using System.Windows.Input;
 
 namespace Plugin.SavableObject.Shared
 {
@@ -20,6 +22,15 @@ namespace Plugin.SavableObject.Shared
     /// </summary>
     public class SavableObject : ISavableObject
     {
+        public GlobalSetting GlobalSetting { get; set; } = new GlobalSetting
+        {
+            LoadAutomaticly = false,
+            IgnoredTypes = new List<Type>
+            {
+                typeof(Command),
+                typeof(ICommand)
+            },
+        };
 
         #region STATIC FIELD
         /// <summary>
@@ -130,6 +141,11 @@ namespace Plugin.SavableObject.Shared
         }
         #endregion
 
+        public SavableObject()
+        {
+            if (GlobalSetting.LoadAutomaticly)
+                Load();
+        }
         /// <summary>
         /// To save all properties in this class.
         /// </summary>
@@ -139,12 +155,12 @@ namespace Plugin.SavableObject.Shared
             {
                 try
                 {
-                    if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
+                    if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any() || GlobalSetting.IgnoredTypes.Contains(property.PropertyType))
                         continue;
 
                     string savedName = this.GetType().Name + property.Name;
 
-                    if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType))
+                    if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType)  )
                     {
                         if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
                             Application.Current.Properties[savedName] = JsonConvert.SerializeObject(property.GetValue(this));
