@@ -11,3 +11,4 @@
 /Sample.SavableObject/Sample.SavableObject.Android/obj
 /Sample.SavableObject/Sample.SavableObject.Android/bin/Debug
 /Sample.SavableObject/Sample.SavableObject.iOS/obj
+*.nupkg

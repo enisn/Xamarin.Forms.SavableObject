@@ -70,20 +70,20 @@ namespace Plugin.SavableObject.Shared
             Application.Current.SavePropertiesAsync();
         }
         /// <summary>
-        /// Loads an object and returns it
+        /// Loads an object and returns it. If you send an existing object. It'll load into it.
         /// </summary>
         /// <typeparam name="T">Object type to load</typeparam>
-        public static T Load<T>() where T : new()
+        public static T Load<T>(T result = default) where T : new()
         {
-            T result = new T();
+            if (result == null)
+                result = new T();
+
             foreach (var property in result.GetType().GetRuntimeProperties())
             {
                 if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                     continue;
                 try
                 {
-
-                    //if (property.GetValue(this) is ICollection)
                     if (!IsDirectlyStorageSupported(property.GetValue(result), property.PropertyType))
                     {
                         if (Application.Current.Properties.ContainsKey(property.Name) && property.CanWrite)
@@ -103,15 +103,6 @@ namespace Plugin.SavableObject.Shared
                 }
             }
             return result;
-        }
-        /// <summary>
-        /// Loads directly to object properties. WARNING: All properties will be affected but IgnoreSave
-        /// </summary>
-        /// <typeparam name="T">Not Necessary, just send value</typeparam>
-        /// <param name="valueToLoad">Valu to be loaded. </param>
-        public static void Load<T>(T valueToLoad) where T : new()
-        {
-            valueToLoad = Load<T>();
         }
 
         /// <summary>
