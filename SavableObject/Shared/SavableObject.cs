@@ -36,7 +36,7 @@ namespace Plugin.SavableObject.Shared
         /// <summary>
         /// Saves an object which does not inherit from savableobject
         /// </summary>
-        public static void Save(Object value)
+        public static void Save(object value, Func<string,string> namingRule = null)
         {
             foreach (var property in value.GetType().GetRuntimeProperties())
             {
@@ -45,20 +45,21 @@ namespace Plugin.SavableObject.Shared
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                         continue;
 
+                    string savedName = namingRule == null ? property.Name : namingRule($"{value.GetType().Name}_{property.Name}");
 
                     if (!IsDirectlyStorageSupported(property.GetValue(value), property.PropertyType))
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                            Application.Current.Properties[property.Name] = JsonConvert.SerializeObject(property.GetValue(value));
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                            Application.Current.Properties[savedName] = JsonConvert.SerializeObject(property.GetValue(value));
                         else
-                            Application.Current.Properties.Add(property.Name, JsonConvert.SerializeObject(property.GetValue(value)));
+                            Application.Current.Properties.Add(savedName, JsonConvert.SerializeObject(property.GetValue(value)));
                     }
                     else
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                            Application.Current.Properties[property.Name] = property.GetValue(value);
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                            Application.Current.Properties[savedName] = property.GetValue(value);
                         else
-                            Application.Current.Properties.Add(property.Name, property.GetValue(value));
+                            Application.Current.Properties.Add(savedName, property.GetValue(value));
                     }
 
                 }
@@ -73,7 +74,7 @@ namespace Plugin.SavableObject.Shared
         /// Loads an object and returns it. If you send an existing object. It'll load into it.
         /// </summary>
         /// <typeparam name="T">Object type to load</typeparam>
-        public static T Load<T>(T result = default) where T : new()
+        public static T Load<T>(T result = default, Func<string,string> namingRule = null) where T : new()
         {
             if (result == null)
                 result = new T();
@@ -84,17 +85,19 @@ namespace Plugin.SavableObject.Shared
                     continue;
                 try
                 {
+                    string savedName = namingRule == null ? property.Name : namingRule($"{result?.GetType().Name}_{property.Name}");
+
                     if (!IsDirectlyStorageSupported(property.GetValue(result), property.PropertyType))
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanWrite)
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanWrite)
                             property.SetValue(result,
                                        //Convert.ChangeType(
-                                       JsonConvert.DeserializeObject(Application.Current.Properties[property.Name].ToString(), property.PropertyType));
+                                       JsonConvert.DeserializeObject(Application.Current.Properties[savedName].ToString(), property.PropertyType));
                     }
                     else
                     {
-                        if (Application.Current.Properties.ContainsKey(property.Name) && property.CanWrite)
-                            property.SetValue(result, Application.Current.Properties[property.Name]);
+                        if (Application.Current.Properties.ContainsKey(savedName) && property.CanWrite)
+                            property.SetValue(result, Application.Current.Properties[savedName]);
                     }
                 }
                 catch (Exception ex)
@@ -108,7 +111,7 @@ namespace Plugin.SavableObject.Shared
         /// <summary>
         /// Clears all properties of an object from local storage
         /// </summary>
-        public static void Clear<T>(T value) where T : new()
+        public static void Clear<T>(T value, Func<string,string> namingRule) where T : new()
         {
             if (value == null)
                 value = new T();
@@ -116,11 +119,13 @@ namespace Plugin.SavableObject.Shared
             {
                 try
                 {
+                    string savedName = namingRule == null ? property.Name : namingRule($"{typeof(T).Name}_{property.Name}");
+
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                         continue;
 
-                    if (Application.Current.Properties.ContainsKey(property.Name) && property.CanRead)
-                        Application.Current.Properties.Remove(property.Name);
+                    if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
+                        Application.Current.Properties.Remove(savedName);
                 }
                 catch (Exception ex)
                 {
@@ -137,6 +142,7 @@ namespace Plugin.SavableObject.Shared
             if (GlobalSetting.LoadAutomaticly)
                 Load();
         }
+        private protected Func<string, string> namingRule = (name) => name;
         /// <summary>
         /// To save all properties in this class.
         /// </summary>
@@ -149,9 +155,9 @@ namespace Plugin.SavableObject.Shared
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any() || GlobalSetting.IgnoredTypes.Contains(property.PropertyType))
                         continue;
 
-                    string savedName = this.GetType().Name + property.Name;
+                    string savedName = namingRule($"{GetType().Name}_{property.Name}");
 
-                    if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType)  )
+                    if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType))
                     {
                         if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
                             Application.Current.Properties[savedName] = JsonConvert.SerializeObject(property.GetValue(this));
@@ -186,8 +192,8 @@ namespace Plugin.SavableObject.Shared
                     continue;
                 try
                 {
-                    string savedName = this.GetType().Name + property.Name;
-                    //if (property.GetValue(this) is ICollection)
+                    string savedName = namingRule($"{GetType().Name}_{property.Name}");
+
                     if (!IsDirectlyStorageSupported(property.GetValue(this), property.PropertyType))
                     {
                         if (Application.Current.Properties.ContainsKey(savedName) && property.CanWrite)
@@ -220,7 +226,7 @@ namespace Plugin.SavableObject.Shared
                     if (property.GetCustomAttributes(typeof(IgnoreSave), false).Any())
                         continue;
 
-                    string savedName = this.GetType().Name + property.Name;
+                    string savedName = namingRule($"{GetType().Name}_{property.Name}");
 
                     if (Application.Current.Properties.ContainsKey(savedName) && property.CanRead)
                         Application.Current.Properties.Remove(savedName);
